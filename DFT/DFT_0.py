@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
+#纯实数输入DFT
+
 from math import *
 
 def DFT(xreal):#分别输入一个实数列表代表时域

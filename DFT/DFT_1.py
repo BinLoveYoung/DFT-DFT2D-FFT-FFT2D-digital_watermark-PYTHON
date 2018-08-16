@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
+#清晰DFT
+
 from math import *
 
 def DFT(xreal,ximag):#分别输入实数部分与虚数部分

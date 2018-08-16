@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
-#使用了内置的复数类型于numpy的ndarray
+#使用了内置的复数类型与numpy的ndarray
 
 from math import *
 import numpy as np

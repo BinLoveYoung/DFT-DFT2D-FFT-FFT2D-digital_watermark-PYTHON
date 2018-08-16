@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
+#递归版本
+
 from math import *
 import numpy as np
 
@@ -47,40 +49,40 @@ def FFT(x):
     print("结束", x)#Debug用
     return x
 
-def IFFT(x):
-    N = len(x)
+def IFFT(X):
+    N = len(X)
     num = N // 2
     M = int(log(N,2))
     if N != 2:
-        x = np.append(IFFT(x[:num]), IFFT(x[num:]))
-        print(x)
+        X = np.append(IFFT(X[:num]), IFFT(X[num:]))
+        print(X)
     else:
         print("当前层数：",M)#Debug用
-        print("初始",x)#Debug用
-        k = x[1]
-        x[1] = x[0]-k
-        x[0] += k
-        print("结束",x)#Debug用
-        return x/2#这个2相当于DFT里最后除的N
+        print("初始",X)#Debug用
+        k = X[1]
+        X[1] = X[0]-k
+        X[0] += k
+        print("结束",X)#Debug用
+        return X/2#这个2相当于DFT里最后除的N
     print("当前层数：", M)#Debug用
-    print("初始", x)#Debug用
+    print("初始", X)#Debug用
     for unit in range(num):
         #a = x[unit]
         #b = x[unit+1 << (M-1)]
         #W = complex(cos(2 * pi * unit / 1 << M), -sin(2 * pi * unit / 1 << M))
         #k = b*W
-        k = x[unit+(1 << (M-1))]*complex(cos(2 * pi * unit / (1 << M)), sin(2 * pi * unit / (1 << M)))#左移运算符的优先级好像比加号低，尴尬
-        x[unit + (1 << (M - 1))] = x[unit] - k
-        x[unit] += k
-    print("结束", x)#Debug用
-    return x/2#这个2相当于DFT里最后除的N
+        k = X[unit+(1 << (M-1))]*complex(cos(2 * pi * unit / (1 << M)), sin(2 * pi * unit / (1 << M)))#左移运算符的优先级好像比加号低，尴尬
+        X[unit + (1 << (M - 1))] = X[unit] - k
+        X[unit] += k
+    print("结束", X)#Debug用
+    return X/2#这个2相当于DFT里最后除的N
 
 
 
 def test3():
     # DFT测试
     # xreal = [i for i in range(8)]
-    xreal = [1.0, 2.0, 3.0, 4.0]  # 初始化样例输入的实数部分
+    xreal = [0.0, 1.0, 0.0, 0.0]  # 初始化样例输入的实数部分
     #ximag = [0.0 for i in range(len(xreal))]  # 将虚数部分设为与实数部分等长的列表，全部为0
     ximag = [0.0, 0.0, 0.0, 0.0]
     x = np.array([complex(xreal[i], ximag[i]) for i in range(len(xreal))])
@@ -97,7 +99,7 @@ def test3():
 
     FFT_order(X)
     x = IFFT(X)  # 将虚数部分设为与实数部分等长的列表，全部为0.并获取返回的x的实数部分和虚数部分分别保存
-    for i in range(len(xreal)):  # 打印x的实数与虚数部分，并四舍五入到整数
+    for i in range(len(x)):  # 打印x的实数与虚数部分，并四舍五入到整数
         print(round(x[i].real), round(x[i].imag))
     print("----")
 

@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
 
-#使用了内置的复数类型与numpy的ndarray
-#使用二维DFT的总式进行计算
+#使用了内置的复数类型于numpy的ndarray
+#使用了两个分式调用DFT从行列分别计算
 
 from math import *
 import numpy as np
+
+from DFT.DFT_2 import DFT,IDFT
 
 def DFT2D_check(x):
     length = 0
@@ -19,33 +21,28 @@ def DFT2D_check(x):
 def DFT2D(x):
     N2 = len(x)#获取行数，即y值（要是觉得横竖分不清先后的话也没问题，只要逆运算的时候顺序相反即可，此处是为了与文档对应）
     N1 = len(x[0])#获取列数，即x值
-    X = np.array([[complex() for n1 in range(N1)] for n2 in range(N2)])#初始化一个N2行N1列的二维复数矩阵
-    for k1 in range(N1):#遍历X中的每个点
-        for k2 in range(N2):
-            for n1 in range(N1):#遍历x中的每个点
-                comp = complex()#用于保存内部求和的值
-                for n2 in range(N2):
-                    comp += x[n2][n1] * complex(cos(2 * pi * k2 * n2 / N2), -sin(2 * pi * k2 * n2 / N2))
+    X = np.array([[complex() for n2 in range(N2)] for n2 in range(N1)])#初始化一个N1行N21列的二维复数矩阵(原因是后面的翻转)
+    M = np.array([[complex() for n1 in range(N1)] for n2 in range(N2)])#初始化一个N2行N1列的二维复数矩阵作为中介
+    for k2 in range(N2):#遍历X中的行
+        M[k2] = DFT(x[k2])
+    for k1 in range(N1):  # 遍历X中的列
+        X[k1] = DFT(M.transpose()[k1])
                 #print("comp=",comp)#Debug
-                X[k2][k1] += comp * complex(cos(2 * pi * k1 * n1 / N1), -sin(2 * pi * k1 * n1 / N1))
             #print("Xreal=", Xreal[k2][k1], "Ximag=", Ximag[k2][k1])#Debug
-    return X
+    return X.transpose()
 
 def IDFT2D(X):
     N2 = len(X)#获取行数，即y值（要是觉得横竖分不清先后的话也没问题，只要逆运算的时候顺序相反即可，此处是为了与文档对应）
     N1 = len(X[0])#获取列数，即x值
-    x = np.array([[complex() for n1 in range(N1)] for n2 in range(N2)])#初始化一个N2行N1列的二维复数矩阵
-    for n1 in range(N1):#遍历X中的每个点
-        for n2 in range(N2):
-            for k1 in range(N1):#遍历x中的每个点
-                comp = complex()  # 用于保存内部求和的值
-                for k2 in range(N2):
-                    comp += X[k2][k1] * complex(cos(2 * pi * k2 * n2 / N2), sin(2 * pi * k2 * n2 / N2))
-                #print("comp=",comp)#Debug
-                x[n2][n1] += comp * complex(cos(2 * pi * k1 * n1 / N1), sin(2 * pi * k1 * n1 / N1))
-            #print("xreal=", xreal[k2][k1], "ximag=", ximag[k2][k1])#Debug
-    x /= N1*N2
-    return x
+    x = np.array([[complex() for n2 in range(N2)] for n1 in range(N1)])#初始化一个N1行N2列的二维复数矩阵(原因是后面的翻转)
+    m = np.array([[complex() for n1 in range(N1)] for n2 in range(N2)])#初始化一个N2行N1列的二维复数矩阵作为中介
+    for n2 in range(N2):#遍历x中的行
+        m[n2] = IDFT(X[n2])
+    for n1 in range(N1):  # 遍历x中的列
+        x[n1] = IDFT(m.transpose()[n1])
+             #print("xreal=", xreal[k2][k1], "ximag=", ximag[k2][k1])#Debug
+    #x /= N1*N2#因为在IDFT中我们已经对数据进行过这一步处理，所以这里就不需要处理了
+    return x.transpose()
 
 def test2():
     # 2D DFT测试
