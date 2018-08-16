@@ -50,5 +50,5 @@ def test1():
     for i in range(len(xreal)):  # 打印x的实数与虚数部分，并四舍五入到整数
         print(round(xreal[i]))
     print("----")
-
-test1()
+if __name__ == "__main__":
+    test1()

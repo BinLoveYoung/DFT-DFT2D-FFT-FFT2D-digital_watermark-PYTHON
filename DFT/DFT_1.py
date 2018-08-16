@@ -55,4 +55,5 @@ def test1():
         print(round(xreal[i]), round(ximag[i]))
     print("----")
 
-test1()
+if __name__ == "__main__":
+    test1()

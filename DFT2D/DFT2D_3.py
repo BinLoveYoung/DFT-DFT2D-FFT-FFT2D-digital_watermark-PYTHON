@@ -9,12 +9,13 @@ import numpy as np
 
 def DFT2D_check(x):
     length = 0
-    for row in range(len(x)):
-        l = len(x[row])
+    for row in x:
+        l = len(row)
         if length < l:
             length = l
-    for row in range(len(x)):
-        x[row] = np.append(x[row], [0 for i in range(length-len(x[row]))])
+    for row in x:
+        row.extend([0 for i in range(length-len(row))])
+    return np.array(x)
 
 def DFT2D(x):
     N2 = len(x)#获取行数，即y值（要是觉得横竖分不清先后的话也没问题，只要逆运算的时候顺序相反即可，此处是为了与文档对应）
@@ -56,8 +57,8 @@ def test2():
     #ximag = [[0.0 for n1 in range(len(xreal[0]))] for n2 in range(len(xreal))]  # 将虚数部分设为与实数部分等大的列表，全部为0
     #ximag = [[0.0, 0.0], [0.0, 0.0]]
     #x = np.array([[complex(xreal[n2][n1], ximag[n2][n1]) for n1 in range(len(xreal[0]))]for n2 in range(len(xreal))])
-    x = np.array([[1.0+0.0j,0.0+0.0j,0],[0.0+0.0j,0.0+0.0j]])
-    DFT2D_check(x)
+    x = [[1.0+0.0j,0.0+0.0j,0],[0.0+0.0j,0.0+0.0j]]
+    x = DFT2D_check(x)
     for n2 in range(len(x)):
         for n1 in range(len(x[0])):
             print(round(x[n2][n1].real), round(x[n2][n1].imag), end='|')
@@ -79,4 +80,5 @@ def test2():
         print()
     print("----")
 
-test2()
+if __name__ == "__main__":
+    test2()

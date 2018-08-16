@@ -7,7 +7,8 @@ from math import *
 import numpy as np
 
 def FFT_check(x):#用0将x的长度补齐到2的幂
-    return np.append(x, [0 for i in range(2 ** (int(ceil(log(len(x), 2)))) - len(x))])
+    x.extend([0 for i in range(2 ** (int(ceil(log(len(x), 2)))) - len(x))])
+    return np.array(x)
 
 def FFT_order(x):#此处改自他人代码用于为输入排序
     num = len(x)
@@ -65,7 +66,7 @@ def IFFT(X):
                 #print("结束：",X[i],X[i+(1<<layer)])
                 i += 1
             i += units
-    return X/N
+    X /= N
 
 
 def test3():
@@ -74,7 +75,7 @@ def test3():
     xreal = [0.0, 1.0, 0.0, 0.0]  # 初始化样例输入的实数部分
     #ximag = [0.0 for i in range(len(xreal))]  # 将虚数部分设为与实数部分等长的列表，全部为0
     ximag = [0.0, 0.0, 0.0, 0.0]
-    x = np.array([complex(xreal[i], ximag[i]) for i in range(len(xreal))])
+    x = [complex(xreal[i], ximag[i]) for i in range(len(xreal))]
     x = FFT_check(x)
 
     for i in range(len(x)):  # 打印x的实数与虚数部分，并四舍五入到整数，作为参照
@@ -91,4 +92,5 @@ def test3():
         print(round(x[i].real), round(x[i].imag))
     print("----")
 
-test3()
+if __name__ == "__main__":
+    test3()

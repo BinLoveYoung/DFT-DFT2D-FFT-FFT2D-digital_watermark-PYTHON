@@ -7,8 +7,8 @@ from math import *
 import numpy as np
 
 def FFT_check(x):#用0将x的长度补齐到2的幂
-    x = np.append(x,[complex() for i in range(2 ** (int(ceil(log(len(x), 2)))) - len(x))])
-    print(x)
+    x.extend([0 for i in range(2 ** (int(ceil(log(len(x), 2)))) - len(x))])
+    return np.array(x)
 
 def FFT_order(x):#此处改自他人代码用于为输入排序
     num = len(x)
@@ -85,12 +85,12 @@ def test3():
     xreal = [0.0, 1.0, 0.0, 0.0]  # 初始化样例输入的实数部分
     #ximag = [0.0 for i in range(len(xreal))]  # 将虚数部分设为与实数部分等长的列表，全部为0
     ximag = [0.0, 0.0, 0.0, 0.0]
-    x = np.array([complex(xreal[i], ximag[i]) for i in range(len(xreal))])
+    x = [complex(xreal[i], ximag[i]) for i in range(len(xreal))]
+    x = FFT_check(x)
     for i in range(len(x)):  # 打印x的实数与虚数部分，并四舍五入到整数，作为参照
         print(round(x[i].real), round(x[i].imag))
     print("----")
 
-    FFT_check(x)
     FFT_order(x)
     X = FFT(x)  # 获取返回的X的实数部分和虚数部分分别保存
     for i in range(len(X)):  # 打印X的实数与虚数部分，并四舍五入到整数
@@ -103,4 +103,5 @@ def test3():
         print(round(x[i].real), round(x[i].imag))
     print("----")
 
-test3()
+if __name__ == "__main__":
+    test3()

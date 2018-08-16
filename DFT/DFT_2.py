@@ -46,4 +46,5 @@ def test1():
         print(round(x[i].real), round(x[i].imag))
     print("----")
 
-test1()
+if __name__ == "__main__":
+    test1()
